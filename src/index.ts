@@ -12,7 +12,7 @@ export const Config: Schema<Config> = Schema.object({});
 
 export function apply(ctx: Context) {
   ctx
-    .command("register-topic <topic:string>", {
+    .command("topic.register <topic:string>", {
       checkArgCount: true,
       authority: 2,
     })
@@ -21,7 +21,7 @@ export function apply(ctx: Context) {
       return "register success";
     });
 
-  ctx.command("topic-info").action(async () => {
+  ctx.command("topic.info").action(async () => {
     const info = ctx.messageTopicService.registerTopicInfo();
     let msg = "";
     for (let key in info) {
@@ -32,7 +32,7 @@ export function apply(ctx: Context) {
   });
 
   ctx
-    .command("topic-subscribe <bindingKey:string>", { checkArgCount: true })
+    .command("topic.subscribe <bindingKey:string>", { checkArgCount: true })
     .action(async ({ session }, bindingKey) => {
       await ctx.messageTopicService.topicSubscribe({
         platform: session.bot.platform,
@@ -45,7 +45,7 @@ export function apply(ctx: Context) {
     });
 
   ctx
-    .command("topic-unsubscribe <bindingKey:string>", { checkArgCount: true })
+    .command("topic.unsubscribe <bindingKey:string>", { checkArgCount: true })
     .action(async ({ session }, bindingKey) => {
       await ctx.messageTopicService.topicSubscribe({
         platform: session.bot.platform,
@@ -57,7 +57,7 @@ export function apply(ctx: Context) {
       return "unsubscribe success";
     });
 
-  ctx.command("topic-subscribe-list").action(async ({ session }) => {
+  ctx.command("topic.subscribe-list").action(async ({ session }) => {
     const rows = await ctx.messageTopicService.getTopicSubscribeByChannel(
       session.bot.platform,
       session.channelId,
@@ -66,7 +66,17 @@ export function apply(ctx: Context) {
   });
 
   ctx
-    .command("send-to-topic <topic:string> <msg:text>", {
+    .command("topic.topic-subscribe-list <topic:string>", {
+      checkArgCount: true,
+    })
+    .action(async ({}, topic) => {
+      const rows =
+        await ctx.messageTopicService.getTopicSubscribeByTopic(topic);
+      return rows.map((row) => row.binding_key).join(", ") || "no result";
+    });
+
+  ctx
+    .command("topic.send <topic:string> <msg:text>", {
       checkArgCount: true,
       authority: 2,
     })

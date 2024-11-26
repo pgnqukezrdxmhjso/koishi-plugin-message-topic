@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-message-topic",
   "description": "",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
@@ -30,7 +30,7 @@
     "message topic"
   ],
   "devDependencies": {
-    "koishi-plugin-message-topic-service": "^0.0.6"
+    "koishi-plugin-message-topic-service": "^0.0.7"
   },
   "peerDependencies": {
     "koishi": "^4.18.0"
